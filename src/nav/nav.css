@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-2%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes shrink {
+  0% {
+    width: 95%;
+  }
+  100% {
+    width: 90%;
+  }
+}
+
+nav{
+    display: flex;
+    background-color: rgb(45, 48, 51);
+}
+nav>.logo{
+    margin: 10px;
+    flex: none;
+    width: 200px;
+    font-size: 24px;
+    font-weight: bold;
+}
+nav>.menu{
+    flex: auto;
+    display: flex;justify-content: flex-end;
+}
+nav>.menu>.item{
+    margin: 15px;
+}
