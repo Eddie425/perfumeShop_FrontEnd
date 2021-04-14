@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import Nav from "./nav/Nav.js";
-import StaffCard from "./staff/StaffCard.js";
-import StaffDetail from "./staff/staffDetail/StaffDetail.js";
-import CheckOut from "./order/CheckOut.js";
-// import SignUpFrom from "./member/signup.js";
-import './App.css';
-// import { ChakraProvider } from "@chakra-ui/react";
+import Nav from "./header/nav/Nav";
+import ProductCard from "./product/ProductCard";
+import ProductDetail from "./product/productDetail/ProductDetail";
+import CheckOut from "./order/CheckOut";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "./App.css";
 import {
   ThemeProvider,
   theme,
@@ -18,67 +17,59 @@ class App extends Component {
     super(props);
     this.state = {
       data: null,
-      page: "home",
     };
   }
 
   state = {};
 
-  setPage(pageLocation) {
-    console.log("pageLocation => " + pageLocation);
-    this.setState({
-      page: pageLocation,
-    });
-  }
-
   componentDidMount() {
     // this.testApi();
   }
 
-  testApi = () => {
-    fetch("https://perfumeshop.herokuapp.com/api/test")
-      .then((response) => response.text())
-      .then((message) => {
-        this.setState({ message: message });
-      });
-  };
-
   render() {
-    let page;
-    let statePage = this.state.page;
-    if (this.state.page == null) {
-      page = <main>Loading...</main>;
-    } else {
-      switch (statePage) {
-        case "home":
-          page = <StaffCard setPage={this.setPage.bind(this)} />;
-          break;
-        case "product":
-          page = <StaffDetail setPage={this.setPage.bind(this)} />;
-          break;
-        case "checkout":
-          page = <CheckOut />;
-          break;
-        default:
-          break;
-      }
-    }
+    // let page;
+    // if (this.props.pageName == null) {
+    //   page = <main>Loading...</main>;
+    // } else {
+    //   switch (this.props.pageName) {
+    //     case "home":
+    //       page = <ProductCard />;
+    //       break;
+    //     case "product":
+    //       page = <ProductDetail />;
+    //       break;
+    //     case "checkout":
+    //       page = <CheckOut />;
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // }
     return (
-      <ThemeProvider theme={theme}>
-        <ColorModeProvider>
-          <CSSReset />
-          <div className="App">
-            <Nav setPage={this.setPage.bind(this)} />
-
-            {/* <SignUpFrom /> */}
-            <header className="App-header">
-              {page}
-              <h3 className="App-title">{this.state.message}</h3>
-            </header>
-
-          </div>
-        </ColorModeProvider>
-      </ThemeProvider>
+      <Router>
+        <ThemeProvider theme={theme}>
+          <ColorModeProvider>
+            <CSSReset />
+            <div className="App">
+              <Nav />
+              <header className="App-header">
+                <Switch>
+                  <Route exact path="/">
+                    <ProductCard />
+                  </Route>
+                  <Route path="/productDetails">
+                    <ProductDetail />
+                  </Route>
+                  <Route path="/checkout">
+                    <CheckOut />
+                  </Route>
+                </Switch>
+                <h3 className="App-title">{this.state.message}</h3>
+              </header>
+            </div>
+          </ColorModeProvider>
+        </ThemeProvider>
+      </Router>
     );
   }
 }

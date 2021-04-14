@@ -10,12 +10,12 @@ import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import imageUrl from "../resource/product/images/perfume_black.png";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: "56.25%", // 16:9
-    cursor: "pointer"
+    cursor: "pointer",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -37,22 +37,24 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(180deg)",
   },
   avatar: {
-    backgroundColor: 'grey',
+    backgroundColor: "grey",
   },
 }));
 
-export default function StaffCard(props) {
+export default function ProductCard() {
+  const history = useHistory();
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-  const [staffId, setStaffId] = React.useState("0");
+  const [ProductId, setProductId] = React.useState("0");
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const handleStaffClick = (event) => {
-    setStaffId(event.currentTarget.id);
-    props.setPage(event.currentTarget.id);
+  const handleProductClick = (event) => {
+    setProductId(event.currentTarget.id);
+    console.log("event.currentTarget.id => " + event.currentTarget.id);
+    history.push("/productDetails");
   };
 
   return (
@@ -76,7 +78,7 @@ export default function StaffCard(props) {
         className={classes.media}
         image={imageUrl}
         title="Paella dish"
-        onClick={handleStaffClick}
+        onClick={handleProductClick}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">

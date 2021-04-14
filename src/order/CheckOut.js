@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
@@ -7,10 +8,9 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
-import AddressForm from "./AddressForm";
-import PaymentForm from "./PaymentForm";
+import OrderDetails from "./OrderDetails";
+import CheckOrderForm from "./CheckOrderForm";
 import Review from "./Review";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,31 +41,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ["Shipping address", "Payment details", "Review your order"];
+const steps = ["訂單詳情", "訂單確認", "訂單成立"];
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentForm />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error("Unknown step");
-  }
-}
-
-export default function Checkout() {
+export default function Checkout(props) {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const activeStep = useSelector((state) => state.web.checkOutStep);
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
+  const dispatch = useDispatch();
+
+  const getStepContent = () => {
+    console.log("activeStep -  getStepContent => ", activeStep);
+    switch (activeStep) {
+      case 0:
+        return <OrderDetails />;
+      case 1:
+        return <CheckOrderForm />;
+      case 2:
+        return <Review />;
+      default:
+        throw new Error("Unknown step");
+    }
+  };
+
+  const handleNext = (e) => {
+    dispatch({
+      type: "CHECKOUT_CHANGE_STEP",
+      activeStep: activeStep + 1,
+    });
+    if (e.target.innerText === "PLACE ORDER") {
+      
+    }
   };
 
   const handleBack = () => {
-    setActiveStep(activeStep - 1);
+    dispatch({
+      type: "CHECKOUT_CHANGE_STEP",
+      activeStep: activeStep - 1,
+    });
   };
 
   return (
@@ -74,7 +86,7 @@ export default function Checkout() {
       <Container component="main" className={classes.main} maxWidth="sm">
         <Paper className={classes.paper} variant="outlined">
           <Typography component="h1" variant="h4" align="center">
-            Checkout
+            CHECKOUT
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (
@@ -87,37 +99,42 @@ export default function Checkout() {
             {activeStep === steps.length ? (
               <React.Fragment>
                 <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
+                  感謝您的訂購。
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order
-                  confirmation, and will send you an update when your order has
-                  shipped.
+                  您的訂單號碼為 #2001539
+                </Typography>
+                <Typography variant="subtitle1">
+                  您將收到訂單確認 Email, 商品寄出後會再 Email 通知您。
                 </Typography>
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep)}
+                {getStepContent()}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
-                  )}
+                    <>
+                      <Button onClick={handleBack} className={classes.button}>
+                        Back
+                      </Button>
 
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                  </Button>
+                      <Button
+                        variant="contained"
+                        onClick={handleNext}
+                        color="primary"
+                        className={classes.button}
+                      >
+                        {activeStep === steps.length - 1
+                          ? "Place order"
+                          : "Next"}
+                      </Button>
+                    </>
+                  )}
                 </div>
               </React.Fragment>
             )}
           </React.Fragment>
         </Paper>
-        {/* <Copyright /> */}
       </Container>
     </React.Fragment>
   );

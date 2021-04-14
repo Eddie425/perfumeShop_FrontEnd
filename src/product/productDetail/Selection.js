@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -44,20 +44,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomizedSelects() {
+export default function CustomizedSelects(props) {
   const classes = useStyles();
-  const [quantity, setQuantity] = React.useState("1");
-  const handleChange = (event) => {
-    setQuantity(event.target.value);
-  };
+  
   return (
     <div>
       <FormControl className={classes.margin}>
         <Select
           labelId="demo-customized-select-label"
           id="demo-customized-select"
-          value={quantity}
-          onChange={handleChange}
+          value={props.quantity}
+          onChange={(e) => props.setSelectQuantity(e.target.value)}
           input={<BootstrapInput />}
         >
           <MenuItem value={1}>1</MenuItem>

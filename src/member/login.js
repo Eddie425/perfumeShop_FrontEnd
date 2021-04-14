@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomInput from "./components/CustomInput";
 import Button from "./components/Button";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
-import "./login.css";
+import AuthService from "../api/service/AuthService";
+import { useHistory } from "react-router-dom";
+import "./form.css";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -18,33 +21,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginForm(props) {
   const classes = useStyles();
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
+
   const basicAuthorize = () => {
-    fetch("https://perfumeshop.herokuapp.com/perfume/auth/login", {
-    // fetch("http://localhost:8080/perfume/auth/login", {
-      headers: {
-        // Authorization: "Basic " + window.btoa(email + ":" + password),
-        // "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json; charset=utf8",
-        credentials: "include",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        username: email,
-        password: password,
-      }),
-    })
-      .then((resp) => {
-        return resp.json();
-      })
-      .then((data) => {
-        return data;
-      })
-      .catch((err) => {
-        console.log("Error: " + err);
-      });
+    (async () => {
+      const response = await AuthService.authLogin(email, password)(dispatch);
+      if (response.token) {
+        console.log("hereeeeee");
+        props.close();
+        history.push("/");
+      }
+    })();
   };
 
   return (
@@ -54,7 +45,6 @@ export default function LoginForm(props) {
         onClose={props.close}
         disableEnforceFocus
         disableAutoFocus
-        // disablePortal
         className={classes.paper}
         closeAfterTransition
         BackdropComponent={Backdrop}

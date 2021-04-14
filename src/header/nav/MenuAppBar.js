@@ -1,33 +1,31 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MainMenuItem from "./mainMenu/MainMenuItem.js";
 import MenuButton from "./mainMenu/MenuButton.js";
-import MainMenu from "./mainMenu/MainMenu.js"
-import { useDisclosure } from "@chakra-ui/core";
-import LoginForm from "../member/login.js"
+import MainMenu from "./mainMenu/MainMenu.js";
+import LoginForm from "../../member/login.js";
+import SignUpForm from "../../member/signup.js";
+import { useHistory } from "react-router-dom";
+// import Snackbar from "@material-ui/core/Snackbar";
+// import MuiAlert from "@material-ui/lab/Alert";
+
+// function Alert(props) {
+//   return <MuiAlert elevation={6} variant="filled" {...props} />;
+// }
 
 export default function MenuAppBar(props) {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  }));
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const classes = useStyles();
+  const history = useHistory();
+  // const [alert, setAlert] = React.useState({
+  //   open: false,
+  //   vertical: "",
+  // });
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginFormOpen, setLoginFormOpen] = useState(false);
+  const [signUpFormOpen, setSignUpFormOpen] = useState(false);
   const [menus, setMenus] = useState([
     "About Us",
     "Our Products",
@@ -36,10 +34,10 @@ export default function MenuAppBar(props) {
     "Contact Us",
   ]);
   const open = Boolean(anchorEl);
-  
+
   const setPage = () => {
-    props.setPage("home");
-  }
+    history.push("/");
+  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -59,12 +57,21 @@ export default function MenuAppBar(props) {
 
   const openLoginForm = () => {
     setLoginFormOpen(true);
+    setAnchorEl(null);
   };
 
   const closeLoginForm = () => {
     setLoginFormOpen(false);
   };
-  
+
+  const openSignUpForm = () => {
+    setSignUpFormOpen(true);
+    setAnchorEl(null);
+  };
+
+  const closeSignUpForm = () => {
+    setSignUpFormOpen(false);
+  };
 
   const styles = {
     container: {
@@ -107,13 +114,29 @@ export default function MenuAppBar(props) {
     );
   });
 
+  // const handleAlertClose = (event, reason) => {
+  //   if (reason === "clickaway") {
+  //     return;
+  //   }
+  //   setOpenAlert(false);
+  // };
+
   return (
     <>
+      {/* <Snackbar
+        open={openAlert}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+      >
+        <Alert onClose={handleAlertClose} severity="success">
+          This is a success message!
+        </Alert>
+      </Snackbar> */}
       <div>
         <div style={styles.container}>
           <MenuButton open={menuOpen} onClick={handleMenuClick} color="white" />
           <div style={styles.logo} onClick={setPage}>
-            Perfume Shop
+            63 official
           </div>
           <div>
             <IconButton
@@ -141,16 +164,14 @@ export default function MenuAppBar(props) {
               onClose={handleClose}
             >
               <MenuItem onClick={openLoginForm}>Log in</MenuItem>
-              <MenuItem onClick={handleClose}>Sign up</MenuItem>
+              <MenuItem onClick={openSignUpForm}>Sign up</MenuItem>
             </Menu>
           </div>
         </div>
         <MainMenu open={menuOpen}>{menuItems}</MainMenu>
       </div>
-      <LoginForm
-        status={loginFormOpen}
-        close={closeLoginForm}
-      />
+      <LoginForm status={loginFormOpen} close={closeLoginForm} />
+      <SignUpForm status={signUpFormOpen} close={closeSignUpForm} />
     </>
   );
 }
