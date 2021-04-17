@@ -34,12 +34,12 @@ export default function Review() {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            寄送地址
-          </Typography>
-          <Typography gutterBottom>
-            姓名 : {member.lastName + member.firstName}
-          </Typography>
+          <Typography
+            variant="h6"
+            gutterBottom
+            className={classes.title}
+          ></Typography>
+          <Typography gutterBottom>姓名 : {member.name}</Typography>
           <Typography gutterBottom>地址 : {addresses.join(" ")}</Typography>
           <Typography gutterBottom>手機 : {member.phone}</Typography>
           <Typography gutterBottom>Email : {member.email}</Typography>

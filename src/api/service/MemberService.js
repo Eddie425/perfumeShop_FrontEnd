@@ -7,18 +7,22 @@ import {
 } from "../actions";
 
 class MemberService {
-  signUpMmeberDetails(member) {
-    return (dispatch) => {
+  signUpMmeberDetails(user) {
+    return async (dispatch) => {
       dispatch(apiPending());
-      API.post("member/", member).then(
-        (response) => {
-          dispatch(signUpMmeberDetailsSuccess(response.data));
-          return response.data;
-        },
-        (error) => {
-          dispatch(apiError(error));
+      try {
+        const response = await API.post("users", JSON.stringify(user));
+        if (response.data.success) {
+          dispatch(signUpMmeberDetailsSuccess(response.data.data));
+          return "註冊帳號成功！";
+        } else {
+          throw new Error("註冊帳號失敗");
         }
-      );
+      } catch (error) {
+        console.log("error =>", error);
+        dispatch(apiError(error));
+        return "註冊帳號失敗";
+      }
     };
   }
 

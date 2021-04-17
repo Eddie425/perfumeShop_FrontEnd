@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -9,19 +10,19 @@ import MainMenu from "./mainMenu/MainMenu.js";
 import LoginForm from "../../member/login.js";
 import SignUpForm from "../../member/signup.js";
 import { useHistory } from "react-router-dom";
-// import Snackbar from "@material-ui/core/Snackbar";
-// import MuiAlert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import AuthService from "../../api/service/AuthService";
 
-// function Alert(props) {
-//   return <MuiAlert elevation={6} variant="filled" {...props} />;
-// }
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default function MenuAppBar(props) {
   const history = useHistory();
-  // const [alert, setAlert] = React.useState({
-  //   open: false,
-  //   vertical: "",
-  // });
+
+  const alert = useSelector((state) => state.web.alert);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginFormOpen, setLoginFormOpen] = useState(false);
@@ -33,7 +34,21 @@ export default function MenuAppBar(props) {
     "FAQ",
     "Contact Us",
   ]);
+  const logOutMenu = [
+    { key: "login", value: "登入" },
+    { key: "signup", value: "註冊" },
+  ];
+
+  const logOutMenuAtCheckoutPage = [{ key: "login", value: "登入" }];
+
+  const logInMenu = [
+    { key: "orders", value: "訂單" },
+    { key: "logout", value: "登出" },
+  ];
+
   const open = Boolean(anchorEl);
+
+  const dispatch = useDispatch();
 
   const setPage = () => {
     history.push("/");
@@ -55,18 +70,42 @@ export default function MenuAppBar(props) {
     setMenuOpen(false);
   };
 
-  const openLoginForm = () => {
-    setLoginFormOpen(true);
-    setAnchorEl(null);
+  const openForm = (e) => {
+    switch (e.target.id) {
+      case "login":
+        setLoginFormOpen(true);
+        setAnchorEl(null);
+        break;
+      case "signup":
+        setSignUpFormOpen(true);
+        setAnchorEl(null);
+        break;
+      case "orders":
+        history.push("/memberOrders");
+        break;
+      case "logout":
+        setAnchorEl(null);
+        dispatch({
+          type: "AUTH_LOGOUT_SUCCESS",
+        });
+        dispatch({
+          type: "ALERT_CONTROL",
+          alert: {
+            open: true,
+            vertical: "top",
+            horizontal: "center",
+            severity: "warning",
+            message: "已登出！",
+          },
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   const closeLoginForm = () => {
     setLoginFormOpen(false);
-  };
-
-  const openSignUpForm = () => {
-    setSignUpFormOpen(true);
-    setAnchorEl(null);
   };
 
   const closeSignUpForm = () => {
@@ -114,24 +153,71 @@ export default function MenuAppBar(props) {
     );
   });
 
-  // const handleAlertClose = (event, reason) => {
-  //   if (reason === "clickaway") {
-  //     return;
-  //   }
-  //   setOpenAlert(false);
-  // };
+  const checkIsInCheckoutPage = () => {
+    if (window.location.href.includes("checkout")) {
+      return memberlogOutMenuAtCheckoutPage;
+    } else {
+      return memberLogOutStatus;
+    }
+  };
+
+  const memberLogOutStatus = logOutMenu.map((obj, index) => {
+    return (
+      <MenuItem key={index} id={obj.key} onClick={openForm}>
+        {obj.value}
+      </MenuItem>
+    );
+  });
+
+  const memberlogOutMenuAtCheckoutPage = logOutMenuAtCheckoutPage.map(
+    (obj, index) => {
+      return (
+        <MenuItem key={index} id={obj.key} onClick={openForm}>
+          {obj.value}
+        </MenuItem>
+      );
+    }
+  );
+
+  const memberLogInStatus = logInMenu.map((obj, index) => {
+    return (
+      <MenuItem key={index} id={obj.key} onClick={openForm}>
+        {obj.value}
+      </MenuItem>
+    );
+  });
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    dispatch({
+      type: "ALERT_CONTROL",
+      alert: {
+        open: false,
+        vertical: "top",
+        horizontal: "center",
+        severity: "",
+        message: "",
+      },
+    });
+  };
 
   return (
     <>
-      {/* <Snackbar
-        open={openAlert}
+      <Snackbar
+        anchorOrigin={{
+          vertical: alert.vertical,
+          horizontal: alert.horizontal,
+        }}
+        open={alert.open}
         autoHideDuration={6000}
         onClose={handleAlertClose}
       >
-        <Alert onClose={handleAlertClose} severity="success">
-          This is a success message!
+        <Alert onClose={handleAlertClose} severity={alert.severity}>
+          {alert.message}
         </Alert>
-      </Snackbar> */}
+      </Snackbar>
       <div>
         <div style={styles.container}>
           <MenuButton open={menuOpen} onClick={handleMenuClick} color="white" />
@@ -163,8 +249,11 @@ export default function MenuAppBar(props) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={openLoginForm}>Log in</MenuItem>
-              <MenuItem onClick={openSignUpForm}>Sign up</MenuItem>
+              {AuthService.checklogStatus()
+                ? memberLogInStatus
+                : window.location.href.includes("checkout")
+                ? memberlogOutMenuAtCheckoutPage
+                : memberLogOutStatus}
             </Menu>
           </div>
         </div>

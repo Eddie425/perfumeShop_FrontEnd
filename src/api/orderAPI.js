@@ -6,7 +6,7 @@ export function placeOrderDetails(order) {
     dispatch(apiPending());
     API.get("orders/", order).then(
       (response) => {
-        console.log("response => ", response);
+        console.log("orders/ response => ", response);
         dispatch(placeOrderDetailsSuccess(response.data[0]));
         return response.data;
       },

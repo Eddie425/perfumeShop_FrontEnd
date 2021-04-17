@@ -53,7 +53,7 @@ export default function ProductCard() {
 
   const handleProductClick = (event) => {
     setProductId(event.currentTarget.id);
-    console.log("event.currentTarget.id => " + event.currentTarget.id);
+
     history.push("/productDetails");
   };
 

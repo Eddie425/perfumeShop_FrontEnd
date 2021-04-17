@@ -8,6 +8,13 @@ const initialState = {
   web: {
     pageName: "home",
     checkOutStep: 0,
+    alert: {
+      open: false,
+      vertical: "top",
+      horizontal: "center",
+      severity: "",
+      message: "",
+    },
     inputLogic: {
       required: {
         key: "required",
@@ -36,6 +43,7 @@ const initialState = {
         errorText: "Email 格式有誤",
         logic: (value) => {
           const reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+          if (!value) return false;
           if (!reg.test(value.toLowerCase())) return false;
           return true;
         },
@@ -61,19 +69,20 @@ const initialState = {
   },
   member: {
     memberId: 0,
-    firstName: "",
-    lastName: "",
-    gender: "",
-    dateOfBirth: "",
+    // firstName: "",
+    // lastName: "",
+    name: "",
+    // gender: "",
+    // dateOfBirth: "",
     email: "",
     phone: "",
     postalCode: "",
     city: "",
     district: "",
     address: "",
-    memberImage: "",
-    registerTime: "",
-    roles: "",
+    // memberImage: "",
+    // registerTime: "",
+    // roles: "",
     orders: [],
     token: null,
   },

@@ -6,6 +6,7 @@ import {
 } from "../api/actions";
 
 const CHANGE_PAGE = "CHANGE_PAGE";
+const ALERT_CONTROL = "ALERT_CONTROL";
 
 const CHECKOUT_CHANGE_STEP = "CHECKOUT_CHANGE_STEP";
 
@@ -14,6 +15,7 @@ const AUTH_LOGOUT_SUCCESS = "AUTH_LOGOUT_SUCCESS";
 const FILL_MEMBER_DETAIL = "FILL_MEMBER_DETAIL";
 
 const STORE_ORDER_PRODUCT = "STORE_ORDER_PRODUCT";
+const PLACE_ORDER = "PLACE_ORDER";
 const PLACE_ORDER_DETAILS_SUCCESS = "PLACE_ORDER_DETAILS_SUCCESS";
 
 const REMOVE_MEMBER_DETAILS = "REMOVE_MEMBER_DETAILS";
@@ -40,6 +42,17 @@ const reducer = (state = initialState, action) => {
           checkOutStep: action.activeStep,
         },
       };
+    case ALERT_CONTROL:
+      Object.assign(state.web.alert, action.alert);
+      return {
+        ...state,
+        web: {
+          ...state.web,
+          alert: {
+            ...action.alert,
+          },
+        },
+      };
 
     case AUTH_LOGIN_SUCCESS:
       localStorage.setItem("token", JSON.stringify(action.token));
@@ -63,6 +76,11 @@ const reducer = (state = initialState, action) => {
         },
       };
 
+    case PLACE_ORDER:
+      return {
+        ...state,
+        orders: action.orders,
+      };
     case PLACE_ORDER_DETAILS_SUCCESS:
       return {
         ...state,
@@ -103,6 +121,7 @@ const reducer = (state = initialState, action) => {
     case FETCH_MEMBER_DETAILS_SUCCESS:
       delete action.member.password;
       Object.assign(state.member, action.member);
+      localStorage.setItem("token", JSON.stringify(action.member.stoken));
       return {
         ...state,
         pending: false,
@@ -131,7 +150,6 @@ const reducer = (state = initialState, action) => {
       };
 
     default:
-      console.log("final state => ", state);
       return state;
   }
 };

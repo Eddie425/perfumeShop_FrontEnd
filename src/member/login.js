@@ -30,10 +30,30 @@ export default function LoginForm(props) {
   const basicAuthorize = () => {
     (async () => {
       const response = await AuthService.authLogin(email, password)(dispatch);
-      if (response.token) {
-        console.log("hereeeeee");
+      if (response.stoken) {
+        dispatch({
+          type: "ALERT_CONTROL",
+          alert: {
+            open: true,
+            vertical: "top",
+            horizontal: "center",
+            severity: "success",
+            message: "登入成功！",
+          },
+        });
         props.close();
         history.push("/");
+      } else {
+        dispatch({
+          type: "ALERT_CONTROL",
+          alert: {
+            open: true,
+            vertical: "top",
+            horizontal: "center",
+            severity: "error",
+            message: "登入失敗，請檢查帳號密碼",
+          },
+        });
       }
     })();
   };

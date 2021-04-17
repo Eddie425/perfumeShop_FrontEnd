@@ -26,10 +26,14 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUpForm(props) {
   const classes = useStyles();
 
+  const closeSignUpForm = () => {
+    props.close();
+  };
+
   return (
     <Dialog
       open={props.status}
-      onClose={props.close}
+      onClose={closeSignUpForm}
       className={classes.paper}
       BackdropComponent={Backdrop}
       BackdropProps={{
@@ -43,7 +47,7 @@ export default function SignUpForm(props) {
             <Typography component="h1" variant="h4" align="center">
               SIGN UP
             </Typography>
-            <MemberDetails />
+            <MemberDetails onClose={closeSignUpForm} />
           </Container>
         </React.Fragment>
       </div>

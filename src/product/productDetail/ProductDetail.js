@@ -65,7 +65,7 @@ export default function ProductDetail() {
             setSelectQuantity={setSelectQuantity}
           />
           <button id="checkout" onClick={handleCheckOutClick} className="cart">
-            CHECKOUT
+            結帳
           </button>
         </div>
       </div>

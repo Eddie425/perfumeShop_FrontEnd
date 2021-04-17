@@ -12,15 +12,18 @@ class AuthService {
       dispatch(apiPending());
       try {
         const response = await API.post(
-          "auth/login",
+          "login",
           JSON.stringify({
-            username: email,
-            password: password,
+            email: email,
+            pwd: password,
           })
         );
-        dispatch(authLoginSuccess(response.data.token));
-        console.log("response ==> ", response);
-        return response.data;
+        if (response.data.status && response.data.stoken) {
+          dispatch(authLoginSuccess(response.data.stoken));
+          return response.data;
+        } else {
+          throw new Error("登入失敗 ! ");
+        }
       } catch (error) {
         console.log("error =>", error);
         dispatch(apiError(error));
@@ -29,10 +32,18 @@ class AuthService {
     };
   }
 
+  checklogStatus() {
+    const token = JSON.parse(localStorage.getItem("token"));
+    if (token) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   logout() {
     return (dispatch) => {
       dispatch(authLogoutSuccess());
-      console.log("=== logout ===");
     };
   }
 }

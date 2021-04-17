@@ -12,11 +12,18 @@ import Typography from "@material-ui/core/Typography";
 import OrderDetails from "./OrderDetails";
 import CheckOrderForm from "./CheckOrderForm";
 import Review from "./Review";
+import OrderService from "../api/service/OrderService";
+import MemberService from "../api/service/MemberService";
+import AuthService from "../api/service/AuthService";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   main: {
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4),
+  },
+  title: {
+    fontFamily: "Lobster",
   },
   paper: {
     marginTop: theme.spacing(3),
@@ -46,11 +53,14 @@ const steps = ["訂單詳情", "訂單確認", "訂單成立"];
 export default function Checkout(props) {
   const classes = useStyles();
   const activeStep = useSelector((state) => state.web.checkOutStep);
+  const orderMember = useSelector((state) => state.member);
+  const cart = useSelector((state) => state.cart);
+  const product = useSelector((state) => state.product);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const getStepContent = () => {
-    console.log("activeStep -  getStepContent => ", activeStep);
     switch (activeStep) {
       case 0:
         return <OrderDetails />;
@@ -69,7 +79,68 @@ export default function Checkout(props) {
       activeStep: activeStep + 1,
     });
     if (e.target.innerText === "PLACE ORDER") {
-      
+      (async () => {
+        let user = {
+          name: orderMember.name,
+          email: orderMember.email,
+          password: orderMember.password,
+        };
+        const resSignUp = await MemberService.signUpMmeberDetails(user)(
+          dispatch
+        );
+
+        if (!resSignUp.includes("失敗")) {
+          const resAuth = await AuthService.authLogin(
+            orderMember.email,
+            orderMember.password
+          )(dispatch);
+        }
+
+        let order = {
+          recv_name: orderMember.name,
+          total_price: cart[0].quantity * product.price,
+          address:
+            orderMember.postalCode +
+            " " +
+            orderMember.city +
+            orderMember.district +
+            orderMember.address,
+          phone: orderMember.phone,
+        };
+
+        const resOrder = await OrderService.placeOrderDetails(order)(dispatch);
+
+        if (!resOrder.includes("失敗")) {
+          dispatch({
+            type: "ALERT_CONTROL",
+            alert: {
+              open: true,
+              vertical: "top",
+              horizontal: "center",
+              severity: "success",
+              message: resOrder,
+            },
+          });
+          // props.onClose();
+          // history.push("/");
+        } else {
+          dispatch({
+            type: "ALERT_CONTROL",
+            alert: {
+              open: true,
+              vertical: "top",
+              horizontal: "center",
+              severity: "error",
+              message: resOrder,
+            },
+          });
+        }
+      })();
+
+      // dispatch({
+      //   type: "PLACE_ORDER",
+      //   activeStep: activeStep + 1,
+      // });
     }
   };
 
@@ -85,8 +156,13 @@ export default function Checkout(props) {
       <CssBaseline />
       <Container component="main" className={classes.main} maxWidth="sm">
         <Paper className={classes.paper} variant="outlined">
-          <Typography component="h1" variant="h4" align="center">
-            CHECKOUT
+          <Typography
+            className={classes.title}
+            component="h1"
+            variant="h4"
+            align="center"
+          >
+            Checkout
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (
@@ -101,12 +177,12 @@ export default function Checkout(props) {
                 <Typography variant="h5" gutterBottom>
                   感謝您的訂購。
                 </Typography>
-                <Typography variant="subtitle1">
+                {/* <Typography variant="subtitle1">
                   您的訂單號碼為 #2001539
-                </Typography>
-                <Typography variant="subtitle1">
+                </Typography> */}
+                {/* <Typography variant="subtitle1">
                   您將收到訂單確認 Email, 商品寄出後會再 Email 通知您。
-                </Typography>
+                </Typography> */}
               </React.Fragment>
             ) : (
               <React.Fragment>

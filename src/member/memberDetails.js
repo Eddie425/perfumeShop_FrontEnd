@@ -10,6 +10,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import { useHistory } from "react-router-dom";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -47,12 +48,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderDetails() {
+export default function OrderDetails(props) {
   const classes = useStyles();
   const member = useSelector((state) => state.member);
   const inputLogic = useSelector((state) => state.web.inputLogic);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [memberInputValue, setMemberInputValue] = useState({
+    name: "",
+    password: "",
+    email: "",
+  });
   const [inputValue, setInputValue] = useState({
     checkEmail: "",
     checkPassword: "",
@@ -60,9 +66,13 @@ export default function OrderDetails() {
   });
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleInputChange = (event) => {
-    let inputMember = { ...member };
+    let memberDetails = {
+      ...memberInputValue,
+    };
+    memberDetails[event.target.name] = event.target.value;
     switch (event.target.name) {
       case "checkEmail":
         setInputValue({
@@ -79,11 +89,7 @@ export default function OrderDetails() {
         break;
 
       default:
-        inputMember[event.target.name] = event.target.value;
-        dispatch({
-          type: "FILL_MEMBER_DETAIL",
-          inputMember: inputMember,
-        });
+        setMemberInputValue(memberDetails);
         break;
     }
   };
@@ -100,9 +106,13 @@ export default function OrderDetails() {
   };
 
   const handleAddressChange = (data) => {
-    member.city = data.county;
-    member.district = data.district;
-    member.postalCode = data.zipcode;
+    let memberDetails = {
+      ...memberInputValue,
+    };
+    memberDetails.city = data.county;
+    memberDetails.district = data.district;
+    memberDetails.postalCode = data.zipcode;
+    setMemberInputValue(memberDetails);
   };
 
   const formatDate = (dateValue) => {
@@ -116,21 +126,47 @@ export default function OrderDetails() {
     let birthD = formatDate(date.getDate());
     let birthDate = date.getFullYear() + "" + birthM + "" + birthD;
     member.dateOfBirth = birthDate;
-    console.log("birthDate => ", birthDate);
   };
 
   const handleOrderSubmit = () => {
-    console.log("handleOrderSubmit");
-    console.log(member);
-    MemberService.signUpMmeberDetails(member)(dispatch);
+    (async () => {
+      let user = {
+        name: memberInputValue.name,
+        email: memberInputValue.email,
+        password: memberInputValue.password,
+      };
+
+      const response = await MemberService.signUpMmeberDetails(user)(dispatch);
+
+      if (!response.includes("失敗")) {
+        dispatch({
+          type: "ALERT_CONTROL",
+          alert: {
+            open: true,
+            vertical: "top",
+            horizontal: "center",
+            severity: "success",
+            message: response,
+          },
+        });
+        props.onClose();
+        history.push("/");
+      } else {
+        dispatch({
+          type: "ALERT_CONTROL",
+          alert: {
+            open: true,
+            vertical: "top",
+            horizontal: "center",
+            severity: "error",
+            message: response,
+          },
+        });
+      }
+    })();
   };
 
   useEffect(() => {
-    (async () => {
-      await MemberService.fetchMmeberDetails(3)(dispatch);
-      setSelectedDate(new Date(member.dateOfBirth));
-    })();
-
     let inputLogicArray = [
       inputLogic.isName,
       inputLogic.isEmail,
@@ -142,11 +178,11 @@ export default function OrderDetails() {
       ValidatorForm.addValidationRule(x.key, x.logic);
     });
     ValidatorForm.addValidationRule(inputLogic.checkEmail.key, (value) => {
-      if (value !== member.email) return false;
+      if (value !== memberInputValue.email) return false;
       return true;
     });
     ValidatorForm.addValidationRule(inputLogic.checkPassword.key, (value) => {
-      if (value !== member.password) return false;
+      if (value !== memberInputValue.password) return false;
       return true;
     });
   }, []);
@@ -162,10 +198,10 @@ export default function OrderDetails() {
             會員資訊
           </DialogContentText>
           <Grid container spacing={4}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <TextValidator
-                name="lastName"
-                label="姓"
+                name="name"
+                label="姓名"
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
@@ -175,10 +211,10 @@ export default function OrderDetails() {
                   inputLogic.isName.errorText,
                 ]}
                 onChange={handleInputChange}
-                value={member.lastName}
+                value={memberInputValue.name}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextValidator
                 name="firstName"
                 label="名"
@@ -191,10 +227,10 @@ export default function OrderDetails() {
                   inputLogic.isName.errorText,
                 ]}
                 onChange={handleInputChange}
-                value={member.firstName}
+                value={memberInputValue.firstName}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid> */}
+            {/* <Grid item xs={12} sm={12}>
               <TextValidator
                 name="phone"
                 label="手機"
@@ -207,10 +243,10 @@ export default function OrderDetails() {
                   inputLogic.isPhone.errorText,
                 ]}
                 onChange={handleInputChange}
-                value={member.phone}
+                value={memberInputValue.phone}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid> */}
+            {/* <Grid item xs={12} sm={6}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   id="date-picker-dialog"
@@ -224,7 +260,7 @@ export default function OrderDetails() {
                   }}
                 />
               </MuiPickersUtilsProvider>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={12}>
               <TextValidator
                 name="email"
@@ -238,10 +274,10 @@ export default function OrderDetails() {
                   inputLogic.isEmail.errorText,
                 ]}
                 onChange={handleInputChange}
-                value={member.email}
+                value={memberInputValue.email}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            {/* <Grid item xs={12} sm={12}>
               <TextValidator
                 name="checkEmail"
                 label="確認 Email address"
@@ -258,7 +294,7 @@ export default function OrderDetails() {
                 onChange={handleInputChange}
                 value={inputValue.checkEmail}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={12}>
               <TextValidator
                 name="password"
@@ -293,10 +329,10 @@ export default function OrderDetails() {
                   inputLogic.isPassword.errorText,
                 ]}
                 onChange={handleInputChange}
-                value={member.password}
+                value={memberInputValue.password}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            {/* <Grid item xs={12} sm={12}>
               <TextValidator
                 name="checkPassword"
                 label="確認密碼"
@@ -314,9 +350,9 @@ export default function OrderDetails() {
                 onChange={handleInputChange}
                 value={inputValue.checkPassword}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
-          <Grid container spacing={2}>
+          {/* <Grid container spacing={2}>
             <Grid item xs={12} sm={12}></Grid>
             <Grid item xs={12} sm={12}>
               <TWzipcode
@@ -325,9 +361,9 @@ export default function OrderDetails() {
                   "form-control countyDist-sel",
                   "form-control zipcode",
                 ]}
-                countyValue={member.city}
-                districtValue={member.district}
-                zipcodeValue={member.postalCode}
+                countyValue={inputValue.city}
+                districtValue={inputValue.district}
+                zipcodeValue={inputValue.postalCode}
                 handleChangeCounty={handleAddressChange}
                 handleChangeDistrict={handleAddressChange}
                 handleChangeZipcode={handleAddressChange}
@@ -343,11 +379,11 @@ export default function OrderDetails() {
                 validators={[inputLogic.required.key]}
                 errorMessages={[inputLogic.required.errorText]}
                 onChange={handleInputChange}
-                value={member.address}
+                value={inputValue.address}
               />
             </Grid>
             <Grid item xs={12}></Grid>
-          </Grid>
+          </Grid> */}
         </DialogContent>
         <DialogActions>
           <Button
