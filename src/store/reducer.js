@@ -21,8 +21,8 @@ const PLACE_ORDER_DETAILS_SUCCESS = "PLACE_ORDER_DETAILS_SUCCESS";
 const REMOVE_MEMBER_DETAILS = "REMOVE_MEMBER_DETAILS";
 
 const reducer = (state = initialState, action) => {
-  console.log("state => ", state);
-  console.log("action => ", action);
+  // console.log("state => ", state);
+  // console.log("action => ", action);
   switch (action.type) {
     //Web
     case CHANGE_PAGE:

@@ -1,28 +1,4 @@
 import axios from "axios";
-import authHeader from "./service/AuthHeader";
-
-// export default axios.create({
-//   baseURL: "https://63official.com/api",
-//   headers: authHeader(),
-// });
-// // Add a request interceptor
-// axios.interceptors.request.use(
-//   function (config) {
-//     console.log(
-//       "axios.interceptors.request  =================================="
-//     );
-//     return config;
-//   },
-//   function (error) {
-//     // Do something with request error
-//     return Promise.reject(error);
-//   }
-// );
-
-// const api = axios.create({
-//   baseURL: "https://63official.com/api/",
-//   headers: authHeader(),
-// });
 
 const axiosApiInstance = axios.create({
   baseURL: "https://63official.com/api/",

@@ -44,14 +44,9 @@ export default function ProductOrderDetails() {
     (async () => {
       const response = await OrderService.fetchOrderDetails()(dispatch);
       if (!response.includes("失敗")) {
-        console.log("response >>>>>>>>>", response);
-        // if (!response.length === 0) {
-        console.log("HEREEEEEE");
         let temp = [];
         response.map((order, index) => temp.push(order));
-        console.log("TEMP  ====> ", temp);
         setOrders(temp);
-        // }
       } else {
         dispatch({
           type: "ALERT_CONTROL",
