@@ -103,13 +103,18 @@ const initialState = {
 
   product: {
     productId: 0,
-    title: "CHANEL N5",
+    title: "63OFFICIAL 首款香水",
     src: [imageUrl, imageUrl1, imageUrl2, imageUrl3, imageUrl4],
     description:
-      "N°5 超越世代，歷久彌新 香奈兒女士以創造未來的的香氛為目標，打造出N°5。",
+      "做為你在63OFFICIAL第一個旅程紀念品，我選擇了香水做為禮物給你。",
     content:
-      "N°5，女性魅力的極致精髓。散發經典傳奇的乙醛花束香氣。香精以頂級原材料製成，為香水最珍貴的表現形式。封存於極簡設計的獨特瓶身，採用Baudruchage 手工封瓶技術，並點綴如寶石切割般形態的瓶蓋。",
-    price: 2950,
+      "\
+      味道\
+      前調：甜梨 與 蜂蜜 的乾淨清甜香氣\
+      中調：薰衣草 / 天竺葵與鼠尾草 完美揉合質感東方香調\
+      後調：雪松 / 乾燥木 恍如置身森林小木屋的木質基調"
+      ,
+    price: 2100,
     // colors: ["blue", "black", "red"],
   },
 

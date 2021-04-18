@@ -93,9 +93,14 @@ export default function OrderDetails() {
   };
 
   const handleAddressChange = (data) => {
-    member.city = data.county;
-    member.district = data.district;
-    member.postalCode = data.zipcode;
+    if (typeof window !== 'undefined') {
+      // window.location.href = "https://63official.backme.tw/checkout/1608/12311?locale=zh-TW";
+ }
+   
+    // console.log(data)
+    // member.city = data.county;
+    // member.district = data.district;
+    // member.postalCode = data.zipcode;
   };
 
   const formatDate = (dateValue) => {

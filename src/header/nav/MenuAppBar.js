@@ -29,10 +29,7 @@ export default function MenuAppBar(props) {
   const [signUpFormOpen, setSignUpFormOpen] = useState(false);
   const [menus, setMenus] = useState([
     "About Us",
-    "Our Products",
-    "Services",
-    "FAQ",
-    "Contact Us",
+    "Our Products"
   ]);
   const logOutMenu = [
     { key: "login", value: "登入" },

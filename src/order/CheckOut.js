@@ -175,7 +175,13 @@ export default function Checkout(props) {
             {activeStep === steps.length ? (
               <React.Fragment>
                 <Typography variant="h5" gutterBottom>
-                  感謝您的訂購。
+                  感謝您的訂購<br /> 1秒後為您引導至付款頁面。
+                  <script>
+                    {/* setTimeout(function(){
+
+                    }) */}
+
+                  </script>
                 </Typography>
                 {/* <Typography variant="subtitle1">
                   您的訂單號碼為 #2001539
