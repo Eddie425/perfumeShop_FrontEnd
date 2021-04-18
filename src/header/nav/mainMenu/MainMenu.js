@@ -9,7 +9,7 @@ class MainMenu extends React.Component {
     };
   }
 
-    componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.open !== this.state.open) {
       this.setState({ open: nextProps.open });
     }

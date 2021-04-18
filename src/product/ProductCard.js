@@ -81,14 +81,16 @@ export default function ProductCard() {
         onClick={handleProductClick}
       />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-        做為你在63OFFICIAL第一個旅程紀念品，我選擇了香水做為禮物給你。
-        味道
-        前調：甜梨 與 蜂蜜 的乾淨清甜香氣
-        中調：薰衣草 / 天竺葵與鼠尾草 完美揉合質感東方香調
-        後調：雪松 / 乾燥木 恍如置身森林小木屋的木質基調
-
+        <Typography
+          variant="h6"
+          color="textPrimary"
+          className={classes.textFont}
+        >
+          做為你在63OFFICIAL第一個旅程紀念品，我選擇了香水做為禮物給你。
         </Typography>
+        {/* <Typography variant="subtitle1" color="textPrimary">
+          味道
+        </Typography> */}
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
@@ -110,11 +112,15 @@ export default function ProductCard() {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>產品說明</Typography>
-          <Typography paragraph>
-           
+          <Typography variant="subtitle1" color="textSecondary" align="left">
+            前調：甜梨 與 蜂蜜 的乾淨清甜香氣
           </Typography>
-         
+          <Typography variant="subtitle1" color="textSecondary" align="left">
+            中調：薰衣草 / 天竺葵與鼠尾草 完美揉合質感東方香調
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary" align="left">
+            後調：雪松 / 乾燥木 恍如置身森林小木屋的木質基調
+          </Typography>
         </CardContent>
       </Collapse>
     </Card>

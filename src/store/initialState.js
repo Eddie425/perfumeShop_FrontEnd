@@ -69,20 +69,13 @@ const initialState = {
   },
   member: {
     memberId: 0,
-    // firstName: "",
-    // lastName: "",
     name: "",
-    // gender: "",
-    // dateOfBirth: "",
     email: "",
     phone: "",
     postalCode: "",
     city: "",
     district: "",
     address: "",
-    // memberImage: "",
-    // registerTime: "",
-    // roles: "",
     orders: [],
     token: null,
   },
@@ -112,10 +105,8 @@ const initialState = {
       味道\
       前調：甜梨 與 蜂蜜 的乾淨清甜香氣\
       中調：薰衣草 / 天竺葵與鼠尾草 完美揉合質感東方香調\
-      後調：雪松 / 乾燥木 恍如置身森林小木屋的木質基調"
-      ,
+      後調：雪松 / 乾燥木 恍如置身森林小木屋的木質基調",
     price: 2100,
-    // colors: ["blue", "black", "red"],
   },
 
   api: {

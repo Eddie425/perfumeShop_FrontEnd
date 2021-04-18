@@ -18,8 +18,6 @@ const STORE_ORDER_PRODUCT = "STORE_ORDER_PRODUCT";
 const PLACE_ORDER = "PLACE_ORDER";
 const PLACE_ORDER_DETAILS_SUCCESS = "PLACE_ORDER_DETAILS_SUCCESS";
 
-const REMOVE_MEMBER_DETAILS = "REMOVE_MEMBER_DETAILS";
-
 const reducer = (state = initialState, action) => {
   // console.log("state => ", state);
   // console.log("action => ", action);
@@ -90,7 +88,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         cart: [
-          // ...state.cart,
           {
             quantity: action.quantity,
             productId: action.productId,
@@ -125,28 +122,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         pending: false,
-      };
-
-    case REMOVE_MEMBER_DETAILS:
-      const initMember = {
-        firstName: "",
-        lastName: "",
-        gender: "",
-        dateOfBirth: "",
-        email: "",
-        phone: "",
-        postalCode: "",
-        city: "",
-        district: "",
-        address: "",
-        memberImage: "",
-        registerTime: "",
-        roles: "",
-        orders: [],
-      };
-      Object.assign(state.member, initMember);
-      return {
-        ...state,
       };
 
     default:

@@ -10,16 +10,8 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import DateFnsUtils from "@date-io/date-fns";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 import TWzipcode from "react-twzipcode";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import MemberService from "../api/service/MemberService";
 import "../order/order.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +48,6 @@ export default function OrderDetails() {
   const inputLogic = useSelector((state) => state.web.inputLogic);
   const activeStep = useSelector((state) => state.web.checkOutStep);
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [inputValue, setInputValue] = useState({
     checkEmail: "",
     checkPassword: "",
@@ -93,50 +84,9 @@ export default function OrderDetails() {
   };
 
   const handleAddressChange = (data) => {
-    if (typeof window !== 'undefined') {
-      // window.location.href = "https://63official.backme.tw/checkout/1608/12311?locale=zh-TW";
- }
-   
-    // console.log(data)
-    // member.city = data.county;
-    // member.district = data.district;
-    // member.postalCode = data.zipcode;
-  };
-
-  const formatDate = (dateValue) => {
-    return dateValue < 10 ? "0" + dateValue : dateValue + "";
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    if (date === null) return;
-    let birthM = formatDate(date.getMonth() + 1);
-    let birthD = formatDate(date.getDate());
-    let birthDate = date.getFullYear() + "" + birthM + "" + birthD;
-    member.dateOfBirth = birthDate;
-  };
-
-  const handleOrderSubmit = () => {
-    dispatch({
-      type: "CHECKOUT_CHANGE_STEP",
-      activeStep: activeStep + 1,
-    });
-  };
-
-  const fetchMmeberDetails = async () => {
-    await MemberService.fetchMmeberDetails(3)(dispatch);
-    setSelectedDate(new Date(member.dateOfBirth));
-  };
-
-  const changeMemberDetails = async (event) => {
-    if (event.target.checked) {
-      await MemberService.fetchMmeberDetails(3)(dispatch);
-      if (member.dateOfBirth) setSelectedDate(new Date(member.dateOfBirth));
-    } else {
-      dispatch({
-        type: "REMOVE_MEMBER_DETAILS",
-      });
-    }
+    member.city = data.county;
+    member.district = data.district;
+    member.postalCode = data.zipcode;
   };
 
   const handleClickShowPassword = () => {
@@ -150,13 +100,14 @@ export default function OrderDetails() {
     event.preventDefault();
   };
 
+  const handleOrderSubmit = () => {
+    dispatch({
+      type: "CHECKOUT_CHANGE_STEP",
+      activeStep: activeStep + 1,
+    });
+  };
+
   useEffect(() => {
-    // (async () => {
-    //   const response = await await MemberService.fetchMmeberDetails(3)(
-    //     dispatch
-    //   );
-    //   if (member.dateOfBirth) setSelectedDate(new Date(member.dateOfBirth));
-    // })();
     let inputLogicArray = [
       inputLogic.isName,
       inputLogic.isEmail,
@@ -164,19 +115,9 @@ export default function OrderDetails() {
       inputLogic.isPassword,
     ];
 
-    handleAddressChange();
-
     inputLogicArray.forEach((x) => {
       ValidatorForm.addValidationRule(x.key, x.logic);
     });
-    // ValidatorForm.addValidationRule(inputLogic.checkEmail.key, (value) => {
-    //   if (value !== member.email) return false;
-    //   return true;
-    // });
-    // ValidatorForm.addValidationRule(inputLogic.checkPassword.key, (value) => {
-    //   if (value !== member.password) return false;
-    //   return true;
-    // });
   }, []);
 
   return (
@@ -192,15 +133,6 @@ export default function OrderDetails() {
                 收件人資訊
               </DialogContentText>
             </Grid>
-            {/* <Grid item xs={12} sm={4}>
-              <FormControlLabel
-                value="equalMember"
-                control={
-                  <Checkbox onChange={changeMemberDetails} color="primary" />
-                }
-                label="同會員資訊"
-              />
-            </Grid> */}
             <Grid item xs={12} sm={12}>
               <TextValidator
                 name="name"
@@ -217,22 +149,6 @@ export default function OrderDetails() {
                 value={member.name}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextValidator
-                name="firstName"
-                label="名"
-                fullWidth
-                autoComplete="given-name"
-                variant="standard"
-                validators={[inputLogic.required.key, inputLogic.isName.key]}
-                errorMessages={[
-                  inputLogic.required.errorText,
-                  inputLogic.isName.errorText,
-                ]}
-                onChange={handleInputChange}
-                value={member.firstName}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={12}>
               <TextValidator
                 name="phone"
@@ -249,21 +165,6 @@ export default function OrderDetails() {
                 value={member.phone}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  id="date-picker-dialog"
-                  label="生日"
-                  format="yyyy/MM/dd"
-                  pattern="[0-9]*"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid> */}
             <Grid item xs={12} sm={12}>
               <TextValidator
                 name="email"

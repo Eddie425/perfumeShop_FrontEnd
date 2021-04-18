@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Nav from "./header/nav/Nav";
 import ProductCard from "./product/ProductCard";
+import AboutUs from "./common/AboutUs";
 import ProductDetail from "./product/productDetail/ProductDetail";
 import CheckOut from "./order/CheckOut";
 import MemberOrders from "./order/memberOrders";
@@ -35,6 +36,9 @@ class App extends Component {
                 <Switch>
                   <Route exact path="/">
                     <ProductCard />
+                  </Route>
+                  <Route path="/aboutUs">
+                    <AboutUs />
                   </Route>
                   <Route path="/productDetails">
                     <ProductDetail />

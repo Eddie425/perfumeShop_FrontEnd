@@ -56,9 +56,6 @@ export default function ProductOrderDetails() {
                   <Typography variant="body2" gutterBottom>
                     {product.description}
                   </Typography>
-                  {/* <Typography variant="body2" color="textSecondary">
-                    ID: 1030114
-                  </Typography> */}
                 </Grid>
                 <Grid item>
                   <Typography variant="body2">
@@ -67,9 +64,6 @@ export default function ProductOrderDetails() {
                   <Typography variant="subtitle1">
                     總額 : {cart[0].quantity * product.price}
                   </Typography>
-                  {/* <Typography variant="body2" style={{ cursor: "pointer" }}>
-                    Remove
-                  </Typography> */}
                 </Grid>
               </Grid>
               <Grid item>

@@ -28,8 +28,14 @@ export default function MenuAppBar(props) {
   const [loginFormOpen, setLoginFormOpen] = useState(false);
   const [signUpFormOpen, setSignUpFormOpen] = useState(false);
   const [menus, setMenus] = useState([
-    "About Us",
-    "Our Products"
+    {
+      key: "",
+      text: "Products",
+    },
+    {
+      key: "aboutUs",
+      text: "About Us",
+    },
   ]);
   const logOutMenu = [
     { key: "login", value: "登入" },
@@ -63,8 +69,12 @@ export default function MenuAppBar(props) {
     setMenuOpen(!menuOpen);
   };
 
-  const handleLinkClick = () => {
+  const handleLinkClick = (e) => {
+    console.log(e.target.innerText);
     setMenuOpen(false);
+    menus.map((obj, index) => {
+      if (e.target.innerText.includes(obj.text)) history.push("/" + obj.key);
+    });
   };
 
   const openForm = (e) => {
@@ -138,14 +148,15 @@ export default function MenuAppBar(props) {
     },
   };
 
-  const menuItems = menus.map((val, index) => {
+  const menuItems = menus.map((obj, index) => {
     return (
       <MainMenuItem
         key={index}
         delay={`${index * 0.1}s`}
         onClick={handleLinkClick}
+        id={obj.key}
       >
-        {val}
+        {obj.text}
       </MainMenuItem>
     );
   });

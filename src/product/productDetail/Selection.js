@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -11,7 +11,7 @@ const BootstrapInput = withStyles((theme) => ({
       marginTop: theme.spacing(3),
     },
   },
-    input: {
+  input: {
     color: "white",
     borderRadius: 4,
     position: "relative",
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CustomizedSelects(props) {
   const classes = useStyles();
-  
+
   return (
     <div>
       <FormControl className={classes.margin}>

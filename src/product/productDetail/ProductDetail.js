@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Selection from "./Selection.js";
 import DetailsThumb from "./DetailsThumb.js";
 import { useHistory } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
 import "./ProductDetail.css";
 
 export default function ProductDetail() {
@@ -56,9 +57,20 @@ export default function ProductDetail() {
             <h2>{product.title}</h2>
             <span>$ {product.price}</span>
           </div>
-          {/* <Colors colors={item.colors} /> */}
-          <p>{product.description}</p>
-          <p>{product.content}</p>
+          <Typography variant="body2" color="inherit">
+            做為你在63OFFICIAL第一個旅程紀念品，我選擇了香水做為禮物給你。
+          </Typography>
+          <div className="detailsText">
+            <Typography variant="subtitle2" color="inherit" align="left">
+              前調：甜梨 與 蜂蜜 的乾淨清甜香氣
+            </Typography>
+            <Typography variant="subtitle2" color="inherit" align="left">
+              中調：薰衣草 / 天竺葵與鼠尾草 完美揉合質感東方香調
+            </Typography>
+            <Typography variant="subtitle2" color="inherit" align="left">
+              後調：雪松 / 乾燥木 恍如置身森林小木屋的木質基調
+            </Typography>
+          </div>
           <DetailsThumb images={product.src} tab={handleTab} myRef={myRef} />
           <Selection
             quantity={quantity}

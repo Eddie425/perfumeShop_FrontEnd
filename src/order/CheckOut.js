@@ -15,7 +15,6 @@ import Review from "./Review";
 import OrderService from "../api/service/OrderService";
 import MemberService from "../api/service/MemberService";
 import AuthService from "../api/service/AuthService";
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -58,7 +57,6 @@ export default function Checkout(props) {
   const product = useSelector((state) => state.product);
 
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const getStepContent = () => {
     switch (activeStep) {
@@ -121,8 +119,6 @@ export default function Checkout(props) {
               message: resOrder,
             },
           });
-          // props.onClose();
-          // history.push("/");
         } else {
           dispatch({
             type: "ALERT_CONTROL",
@@ -136,11 +132,6 @@ export default function Checkout(props) {
           });
         }
       })();
-
-      // dispatch({
-      //   type: "PLACE_ORDER",
-      //   activeStep: activeStep + 1,
-      // });
     }
   };
 
@@ -175,20 +166,9 @@ export default function Checkout(props) {
             {activeStep === steps.length ? (
               <React.Fragment>
                 <Typography variant="h5" gutterBottom>
-                  感謝您的訂購<br /> 1秒後為您引導至付款頁面。
-                  <script>
-                    {/* setTimeout(function(){
-
-                    }) */}
-
-                  </script>
+                  感謝您的訂購
+                  <br /> 1秒後為您引導至付款頁面。
                 </Typography>
-                {/* <Typography variant="subtitle1">
-                  您的訂單號碼為 #2001539
-                </Typography> */}
-                {/* <Typography variant="subtitle1">
-                  您將收到訂單確認 Email, 商品寄出後會再 Email 通知您。
-                </Typography> */}
               </React.Fragment>
             ) : (
               <React.Fragment>
