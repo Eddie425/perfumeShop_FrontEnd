@@ -30,6 +30,7 @@ class App extends Component {
         <ThemeProvider theme={theme}>
           <ColorModeProvider>
             <CSSReset />
+            
             <div className="App">
               <Nav />
               <header className="App-header">
