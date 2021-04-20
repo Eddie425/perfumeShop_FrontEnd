@@ -15,6 +15,7 @@ import Review from "./Review";
 import OrderService from "../api/service/OrderService";
 import MemberService from "../api/service/MemberService";
 import AuthService from "../api/service/AuthService";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -168,6 +169,12 @@ export default function Checkout(props) {
                 <Typography variant="h5" gutterBottom>
                   感謝您的訂購
                   <br /> 1秒後為您引導至付款頁面。
+                  若無跳轉請點擊此<Link href={window.new_ono}>
+                  連結
+  </Link> <br />跳轉
+                  
+                  <br />
+                  
                 </Typography>
               </React.Fragment>
             ) : (
