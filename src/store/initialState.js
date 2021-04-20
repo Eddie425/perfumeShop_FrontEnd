@@ -1,8 +1,12 @@
-import imageUrl from "../resource/product/images/perfume_black.png";
-import imageUrl1 from "../resource/product/images/perfume_black1.jpg";
-import imageUrl2 from "../resource/product/images/perfume_black2.jpg";
-import imageUrl3 from "../resource/product/images/perfume_black3.jpg";
-import imageUrl4 from "../resource/product/images/perfume_black4.jpeg";
+import imageUrl from "../resource/product/images/perfume_cover.jpg";
+import imageUrl1 from "../resource/product/images/p_1.jpg";
+import imageUrl2 from "../resource/product/images/p_2.jpg";
+import imageUrl3 from "../resource/product/images/p_3.jpg";
+import imageUrl4 from "../resource/product/images/p_4.jpg";
+import imageUrl5 from "../resource/product/images/p_5.jpg";
+import imageUrl6 from "../resource/product/images/p_6.jpg";
+import imageUrl7 from "../resource/product/images/p_7.jpg";
+import imageUrl8 from "../resource/product/images/p_8.jpg";
 
 const initialState = {
   web: {
@@ -97,7 +101,7 @@ const initialState = {
   product: {
     productId: 0,
     title: "63OFFICIAL 首款香水",
-    src: [imageUrl, imageUrl1, imageUrl2, imageUrl3, imageUrl4],
+    src: [imageUrl,imageUrl4, imageUrl3, imageUrl2, imageUrl1,imageUrl6],
     description:
       "做為你在63OFFICIAL第一個旅程紀念品，我選擇了香水做為禮物給你。",
     content:

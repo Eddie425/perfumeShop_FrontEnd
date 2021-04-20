@@ -14,7 +14,8 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import imageUrl from "../resource/product/images/perfume_black.png";
+import imageUrl from "../resource/product/images/perfume_cover.jpg";
+import blockIcon from "../resource/product/images/block_icon.png";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -62,7 +63,7 @@ export default function ProductCard() {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            N°5
+            <img src={ blockIcon } />
           </Avatar>
         }
         action={
