@@ -8,9 +8,9 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import reducer from "./store/reducer";
-import ReactGA from 'react-ga';
-ReactGA.initialize('G-D7KQDNSTS1');
-ReactGA.pageview(window.location.pathname + window.location.search);
+// import ReactGA from 'react-ga';
+// ReactGA.initialize('G-D7KQDNSTS1');
+// ReactGA.pageview(window.location.pathname + window.location.search);
 const middlewares = [thunk];
 
 const store = createStore(reducer, applyMiddleware(...middlewares));
